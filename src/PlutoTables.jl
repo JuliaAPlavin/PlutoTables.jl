@@ -17,7 +17,10 @@ function ColumnInput(ctype::Type, optics)
         map(or -> or.label, os_full),
         map(or -> _unit_to_html(or.unit), os_full),
     ]
-    all(isnothing, optshead[2]) && deleteat!(only(itemshead), 2)
+    if all(or -> isnothing(or.unit), os_full)
+        deleteat!(only(itemshead), 2)
+        deleteat!(optshead, 2)
+    end
     @p PlutoUI.combine() do Child
         tbldata = [
             map(os_full) do or
