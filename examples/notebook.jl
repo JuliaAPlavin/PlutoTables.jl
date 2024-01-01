@@ -247,7 +247,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 AccessorsExtra = "~0.1.45"
-PlutoTables = "~0.1.2"
+PlutoTables = "~0.1.3"
 PlutoUIExtra = "~0.1.1"
 StaticArrays = "~1.5.25"
 Unitful = "~1.14.0"
