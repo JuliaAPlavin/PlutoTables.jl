@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.25
+# v0.19.26
 
 using Markdown
 using InteractiveUtils
@@ -21,7 +21,7 @@ using PlutoTables
 using AccessorsExtra
 
 # ╔═╡ f9b4544e-a767-4b84-9fdb-87cf0d4b1ed9
-using PlutoUI
+using PlutoUIExtra
 
 # ╔═╡ 956329b7-b96d-4a3b-8324-aeb2f2c52195
 using Unitful
@@ -36,6 +36,14 @@ using LinearAlgebra: norm
 md"""
 Import `PlutoTables` and other useful packages:
 """
+
+# ╔═╡ e82cad05-8438-41c6-9017-225dcd13b90e
+# begin
+# 	using Revise
+# 	import Pkg
+# 	eval(:(Pkg.develop(path="..")))
+# 	using PlutoTables
+# end
 
 # ╔═╡ 90bb0c1a-0c92-4d7b-90bf-d0fdce2d359f
 
@@ -107,6 +115,23 @@ md"""
 	(@o _.comps[∗].shift) => Slider(0.0:10, show_value=true),
 ))
 
+# ╔═╡ ca01b0d5-0a06-4ac2-846d-c9478e964295
+mod2
+
+# ╔═╡ b8dbe2b5-75ab-4744-918f-cb4c940e7638
+md"""
+- Show numbers, keys, or any other information using context-optics from `AccessorsExtra`:
+"""
+
+# ╔═╡ bfa7c1a2-9259-4aa4-b69c-c982674ccc0d
+@bind mod2k ColumnInput(mod₀, (
+	(@o _.comps |> keyed(∗) |> _.scale) => Slider(0:0.1:5, show_value=true),
+	(@o _.comps[∗].shift) => Slider(0.0:10, show_value=true),
+))
+
+# ╔═╡ 314c256e-c695-4e8a-8641-402cb733f9f8
+mod2k
+
 # ╔═╡ 709e2895-bac4-4040-b5a6-95d4c0afd518
 md"""
 - Edit all scales and shifts, with one row for each model component (from `mod.comps`) and one column for each optic (`_.scale, _.shift`).
@@ -124,13 +149,13 @@ mod3
 
 # ╔═╡ 63d5735b-8c27-4ee7-9ab3-d1108428b690
 md"""
-- Same, but now components got into table columns:
+- Same, but now components got into table columns. We use vertical sliders here, but any widgets are allowed.
 """
 
-# ╔═╡ 70f48870-b2bb-488d-bb9f-4c459a2ea181
+# ╔═╡ bcf841b2-be82-444f-bfbb-d7754fec4a7d
 @bind mod4 ItemsColumnsInput(mod₀, (@o _.comps |> keyed(∗)), (
-	(@o _.scale) => Slider(0:0.1:5, show_value=true),
-	(@o _.shift) => Slider(0.0:10, show_value=true),
+	(@o _.scale) => Slider(0:0.1:5, style=(var"-webkit-appearance"="slider-vertical", width="1em"), show_value=true),
+	(@o _.shift) => Slider(0.0:10, style=(var"-webkit-appearance"="slider-vertical", width="1em"), show_value=true),
 ))
 
 # ╔═╡ fff95e73-229e-4405-9df9-466261af5540
@@ -174,8 +199,8 @@ md"""
 
 # ╔═╡ d3daa105-a418-40f9-97f3-795c8a650d44
 @bind mod6 ColumnInput(modu₀, (
-	(@o _.comps[∗].scale |> ustrip(u"m", _)) => Slider(0:10.:10^4, show_value=true),
-	(@o _.comps[∗].shift) => Slider(0.0:10, show_value=true),
+	(@o _.comps[∗].scale |> ustrip(u"m", _)) |> enumerated => Slider(0:10.:10^4, show_value=true),
+	(@o _.comps[∗].shift) |> enumerated => Slider(0.0:10, show_value=true),
 ))
 
 # ╔═╡ a2d388d1-23c3-453b-bbef-bf0503a4ca8d
@@ -216,14 +241,14 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 AccessorsExtra = "33016aad-b69d-45be-9359-82a41f556fd4"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 PlutoTables = "e64c0356-fa58-4209-b01c-f6c8ed5474f5"
-PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+PlutoUIExtra = "a011ac08-54e6-4ec3-ad1c-4165f16ac4ce"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
 AccessorsExtra = "~0.1.45"
-PlutoTables = "~0.1.0"
-PlutoUI = "~0.7.51"
+PlutoTables = "~0.1.2"
+PlutoUIExtra = "~0.1.1"
 StaticArrays = "~1.5.25"
 Unitful = "~1.14.0"
 """
@@ -234,7 +259,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.9.0"
 manifest_format = "2.0"
-project_hash = "07ff9d8c2d3df6d7270d475e920182fa78a9072f"
+project_hash = "79b0df9a5a8978446c3ba39877f247a0731d9bf9"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -262,7 +287,7 @@ version = "0.1.31"
 
 [[deps.AccessorsExtra]]
 deps = ["Accessors", "CompositionsBase", "ConstructionBase", "DataPipes", "InverseFunctions", "LinearAlgebra", "Reexport"]
-git-tree-sha1 = "c0c0d64b5c6a7725da4e087500e00b875d3c7ddb"
+git-tree-sha1 = "013db2fa32f645d649b5bfea4bd559291c7e8a1c"
 uuid = "33016aad-b69d-45be-9359-82a41f556fd4"
 version = "0.1.45"
 
@@ -485,9 +510,9 @@ version = "1.9.0"
 
 [[deps.PlutoTables]]
 deps = ["AccessorsExtra", "CompositionsBase", "DataPipes", "FlexiMaps", "HypertextLiteral", "PlutoUI"]
-git-tree-sha1 = "36b4285cd904083c4d08c7bcf4a7a5b8aad8ad57"
+git-tree-sha1 = "9d7d077453d56dab663625b971e61389d97fd908"
 uuid = "e64c0356-fa58-4209-b01c-f6c8ed5474f5"
-version = "0.1.0"
+version = "0.1.2"
 weakdeps = ["Unitful"]
 
     [deps.PlutoTables.extensions]
@@ -499,11 +524,17 @@ git-tree-sha1 = "b478a748be27bd2f2c73a7690da219d0844db305"
 uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 version = "0.7.51"
 
+[[deps.PlutoUIExtra]]
+deps = ["AbstractPlutoDingetjes", "HypertextLiteral", "InteractiveUtils", "Markdown", "PlutoUI", "Reexport"]
+git-tree-sha1 = "51ca5cfa590f1dd37b54c7b019df3ad72e71c170"
+uuid = "a011ac08-54e6-4ec3-ad1c-4165f16ac4ce"
+version = "0.1.1"
+
 [[deps.PrecompileTools]]
 deps = ["Preferences"]
-git-tree-sha1 = "259e206946c293698122f63e2b513a7c99a244e8"
+git-tree-sha1 = "9673d39decc5feece56ef3940e5dafba15ba0f81"
 uuid = "aea7be01-6a6a-4083-8856-8a6e6704d82a"
-version = "1.1.1"
+version = "1.1.2"
 
 [[deps.Preferences]]
 deps = ["TOML"]
@@ -634,6 +665,7 @@ version = "17.4.0+0"
 # ╔═╡ Cell order:
 # ╟─0e0ca714-0b17-4406-b43a-0a1e3e8eef96
 # ╠═64229c85-c53d-4b77-bf06-c7cf7908d83c
+# ╠═e82cad05-8438-41c6-9017-225dcd13b90e
 # ╠═534f8121-dfc6-4df4-8bae-11c20f28424c
 # ╠═f9b4544e-a767-4b84-9fdb-87cf0d4b1ed9
 # ╠═956329b7-b96d-4a3b-8324-aeb2f2c52195
@@ -650,11 +682,15 @@ version = "17.4.0+0"
 # ╠═87182d19-9705-44ca-8c4f-591c1510b179
 # ╟─b180cc61-de6e-4546-a97e-dbb5cfc1d4e4
 # ╠═6b12af31-791a-4919-9de1-5a35202cb2f7
+# ╠═ca01b0d5-0a06-4ac2-846d-c9478e964295
+# ╟─b8dbe2b5-75ab-4744-918f-cb4c940e7638
+# ╠═bfa7c1a2-9259-4aa4-b69c-c982674ccc0d
+# ╠═314c256e-c695-4e8a-8641-402cb733f9f8
 # ╟─709e2895-bac4-4040-b5a6-95d4c0afd518
 # ╠═4a0b3eaf-a18a-4d7d-ba7e-57c41b79b1dd
 # ╠═694ee409-31be-4d70-b554-d7ca5ab30613
 # ╟─63d5735b-8c27-4ee7-9ab3-d1108428b690
-# ╠═70f48870-b2bb-488d-bb9f-4c459a2ea181
+# ╠═bcf841b2-be82-444f-bfbb-d7754fec4a7d
 # ╠═fff95e73-229e-4405-9df9-466261af5540
 # ╟─611b478d-1d14-44be-943f-44efea4a66f2
 # ╠═210e79ca-2cf7-47f1-89d4-3c1b535582a3
