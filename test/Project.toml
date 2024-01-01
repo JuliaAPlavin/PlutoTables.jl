@@ -13,7 +13,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 [compat]
 AbstractPlutoDingetjes = "1.1.4"
 Accessors = "0.1.31"
-AccessorsExtra = "0.1.45"
+AccessorsExtra = "0.1.44"
 Aqua = "0.6.1"
 CompatHelperLocal = "0.1.25"
 PlutoUI = "0.7.51"
