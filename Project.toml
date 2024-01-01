@@ -1,7 +1,7 @@
 name = "PlutoTables"
 uuid = "e64c0356-fa58-4209-b01c-f6c8ed5474f5"
 authors = ["Alexander Plavin <alexander@plav.in>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [deps]
 AccessorsExtra = "33016aad-b69d-45be-9359-82a41f556fd4"
@@ -18,7 +18,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulExt = "Unitful"
 
 [compat]
-AccessorsExtra = "0.1.44"
+AccessorsExtra = "0.1.45"
 CompositionsBase = "0.1.2"
 DataPipes = "0.3.8"
 FlexiMaps = "0.1.14"
