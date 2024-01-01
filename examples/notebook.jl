@@ -76,6 +76,8 @@ mod₀ = SumModel((
 md"""
 Now, let's see some examples of `PlutoTables` UIs and layouts to modify this object.
 
+Target values are specified as `Accessors` optics, and each is associated with a `PlutoUI` input element using the `Pair` syntax: `optic => input`.
+
 Note how the syntax is similar to optimization problem specifications in the `AccessibleOptimization` package.
 """
 
@@ -86,8 +88,8 @@ md"""
 
 # ╔═╡ 23aa9375-b404-428b-8158-8f1b779c5eef
 @bind mod1 ColumnInput(mod₀, (
-	(@o _.comps[1].scale) => Slider(0:10., show_value=true),
-	(@o _.comps[1].shift) => Slider(0:10., show_value=true),
+	(@o _.comps[1].scale) => Slider(0:5., show_value=true),
+	(@o _.comps[1].shift) => Slider(0:5., show_value=true),
 	(@o _.comps[3].shift) => Slider(0:10., show_value=true),
 ))
 
@@ -107,7 +109,8 @@ md"""
 
 # ╔═╡ 709e2895-bac4-4040-b5a6-95d4c0afd518
 md"""
-- Edit all scales and shifts, with one row for each model component (from `mod.comps`) and one column for each optic (`_.scale, _.shift`):
+- Edit all scales and shifts, with one row for each model component (from `mod.comps`) and one column for each optic (`_.scale, _.shift`).
+Here, the second argument to `ItemsRowsInput` is the optic defining target items (table rows).
 """
 
 # ╔═╡ 4a0b3eaf-a18a-4d7d-ba7e-57c41b79b1dd
