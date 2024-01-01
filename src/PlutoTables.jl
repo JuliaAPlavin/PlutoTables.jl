@@ -44,7 +44,10 @@ function ItemsColumnsInput(obj, itemsoptic, optics)
         flatmap(or -> Any[RowSpan(or.label, or.nrow); fill(nothing, or.nrow-1)], os_full),
         flatmap(or -> Any[RowSpan(_unit_to_html(or.unit), or.nrow); fill(nothing, or.nrow-1)], os_full),
     ]
-    all(isnothing, optshead[2]) && deleteat!(only(itemshead), 2)
+    if all(or -> isnothing(or.unit), os_full)
+        deleteat!(only(itemshead), 2)
+        deleteat!(optshead, 2)
+    end
     @p PlutoUI.combine() do Child
         tbldata = map(items .|> stripcontext) do item
             flatmap(os_full) do or
