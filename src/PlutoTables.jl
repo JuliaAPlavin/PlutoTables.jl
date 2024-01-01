@@ -17,7 +17,10 @@ function ColumnInput(ctype::Type, optics)
         map(or -> or.label, os_full),
         map(or -> _unit_to_html(or.unit), os_full),
     ]
-    all(isnothing, optshead[2]) && deleteat!(only(itemshead), 2)
+    if all(or -> isnothing(or.unit), os_full)
+        deleteat!(only(itemshead), 2)
+        deleteat!(optshead, 2)
+    end
     @p PlutoUI.combine() do Child
         tbldata = [
             map(os_full) do or
@@ -140,11 +143,11 @@ _to_td(x::ColSpan) = @htl("<td colspan=$(x.colspan)>$(x.value)</td>")
 
 _fullspec(optics, obj) = map(optics) do (optic, spec)
     oshow, unit = _split_unit(optic)
-    (; optic, unit, label=_optic_short_str(oshow), nrow=length(getall(obj, optic)), _from_wspec(spec)...)
+    (; optic, unit, label=sprint(print, stripcontext(oshow); context=:compact => true), nrow=length(getall(obj, optic)), _from_wspec(spec)...)
 end
 _fullspec(optics) = map(optics) do (optic, spec)
     oshow, unit = _split_unit(optic)
-    (; optic, unit, label=_optic_short_str(oshow), _from_wspec(spec)...)
+    (; optic, unit, label=sprint(print, stripcontext(oshow); context=:compact => true), _from_wspec(spec)...)
 end
 
 
@@ -170,8 +173,5 @@ _unit_to_html(ustr::String) = "($ustr)"
 
 _from_wspec(spec::NamedTuple) = spec
 _from_wspec(widget) = (; widget)
-
-
-_optic_short_str(o) = replace(sprint(print, stripcontext(o); context=:compact => true), r"\(@optic ([^)]+)\)" => s"\1")
 
 end
