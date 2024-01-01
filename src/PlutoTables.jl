@@ -37,6 +37,7 @@ end
 RowInput(obj, optics) = ItemsRowsInput(obj, identity, optics)
 ColumnInput(obj, optics) = ItemsColumnsInput(obj, identity, optics)
 
+ItemsColumnsInput(obj, optics) = ItemsColumnsInput(obj, keyed(∗), optics)
 function ItemsColumnsInput(obj, itemsoptic, optics)
     items = getall(obj, itemsoptic)
     os_full = _fullspec(optics, stripcontext(first(items)))
@@ -69,6 +70,7 @@ function ItemsColumnsInput(obj, itemsoptic, optics)
 end
 
 
+ItemsRowsInput(obj, optics) = ItemsRowsInput(obj, keyed(∗), optics)
 function ItemsRowsInput(obj, itemsoptic, optics)
     items = getall(obj, itemsoptic)
     os_full = _fullspec(optics, stripcontext(first(items)))

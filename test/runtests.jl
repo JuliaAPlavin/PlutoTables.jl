@@ -73,6 +73,19 @@ end
     ≈ₜ(x::T, y::T) where {T} = all(x .≈ y)
 
     @testset for IT in (ItemsRowsInput, ItemsColumnsInput)
+        w = IT((
+                1+2im,
+                3-4im,
+                5.5+6.5im,    
+            ), (
+                abs => Slider(0:0.2e7:1e8, show_value=true),
+                rad2deg ∘ angle => Slider(-180:15.:180, show_value=true)
+        ))
+        @test Bonds.initial_value(w) ≈ₜ (
+            1.0+2im,
+            3.0-4im,
+            5.5+6.5im,    
+        )
         @testset for itemsoptic in (Elements(), keyed(Elements()), Properties(), keyed(Properties()), @optics(_[1], _[2]))
             w = IT((
                     1+2im,
