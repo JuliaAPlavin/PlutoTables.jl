@@ -3,6 +3,18 @@ using TestItemRunner
 @run_package_tests
 
 
+@testitem "units" begin
+    using PlutoTables: _split_unit
+    using AccessorsExtra
+    using Unitful
+
+    @test _split_unit(@o ustrip(u"m", _)) === (identity, "m")
+    @test _split_unit(@o _[∗] |> angle |> rad2deg) === ((@o _[∗] |> angle), "°")
+    @test _split_unit(@o _.comps[∗].scale |> ustrip(u"m", _)) === ((@o _.comps[∗].scale), "m")
+    @test _split_unit(@o _.comps |> enumerated(∗) |> _.scale |> ustrip(u"m", _)) === ((@o _.comps |> enumerated(∗) |> _.scale), "m")
+    @test _split_unit((@o _.comps[∗].scale |> ustrip(u"m", _)) |> enumerated) === ((@o _.comps[∗].scale) |> enumerated, "m")
+end
+
 @testitem "ColumnInput construct" begin
     using PlutoUI
     import AbstractPlutoDingetjes: Bonds
@@ -22,7 +34,7 @@ end
 @testitem "Row and ColumnInput modify" begin
     using PlutoUI
     using Unitful
-    using Accessors
+    using AccessorsExtra
     import AbstractPlutoDingetjes: Bonds
 
     for IT in (ColumnInput, RowInput)
@@ -35,6 +47,15 @@ end
         w = IT(3e7 - 5e7im, (
             abs => Slider(0:0.2e7:1e8, show_value=true),
             @optic(angle(_) |> ustrip(u"°", _)) => Slider(-180:15.:180, show_value=true)
+        ))
+        @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
+
+        w = IT(3e7 - 5e7im, (
+            Properties() => Scrubbable(NaN),
+        ))
+        @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
+        w = IT(3e7 - 5e7im, (
+            keyed(Properties()) => Scrubbable(NaN),
         ))
         @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
 

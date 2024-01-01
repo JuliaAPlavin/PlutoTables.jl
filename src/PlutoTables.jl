@@ -51,8 +51,9 @@ function ItemsColumnsInput(obj, itemsoptic, optics)
     @p PlutoUI.combine() do Child
         tbldata = map(items .|> stripcontext) do item
             flatmap(os_full) do or
-                map(getall(item, or.optic) |> enumerate) do (i, b)
-                    Child(@set $(or.widget).default = b)
+                map(getall(item, or.optic)) do b
+                    cw = Child(@set $(or.widget).default = stripcontext(b))
+                    hascontext(b) ? @htl("$(b.ctx) $cw") : cw
                 end
             end
         end |> stack
@@ -60,7 +61,7 @@ function ItemsColumnsInput(obj, itemsoptic, optics)
     end |>
     PlutoUI.Experimental.transformed_value() do tup
         tup = vec(permutedims(reshape(collect(tup), (length(items), :)))) |> Tuple
-        setall(obj, AccessorsExtra.concat(first.(optics)...) ∘ stripcontext(itemsoptic), tup)
+        setall(obj, stripcontext.(AccessorsExtra.concat(first.(optics)...) ∘ itemsoptic), tup)
     end
 end
 
@@ -83,15 +84,16 @@ function ItemsRowsInput(obj, itemsoptic, optics)
     @p PlutoUI.combine() do Child
         tbldata = map(items .|> stripcontext) do item
             flatmap(os_full) do or
-                map(getall(item, or.optic) |> enumerate) do (i, b)
-                    Child(@set $(or.widget).default = b)
+                map(getall(item, or.optic)) do b
+                    cw = Child(@set $(or.widget).default = stripcontext(b))
+                    hascontext(b) ? @htl("$(b.ctx) $cw") : cw
                 end
             end
         end |> stack
         _table_html(optshead, itemshead, eachcol(tbldata))
     end |>
     PlutoUI.Experimental.transformed_value() do tup
-        setall(obj, AccessorsExtra.concat(first.(optics)...) ∘ stripcontext(itemsoptic), tup)
+        setall(obj, stripcontext.(AccessorsExtra.concat(first.(optics)...) ∘ itemsoptic), tup)
     end
 end
 
@@ -148,6 +150,11 @@ end
 
 _split_unit(::typeof(rad2deg)) = (identity, "°")
 _split_unit(o) = (o, nothing)
+function _split_unit(o::AccessorsExtra.ContextOptic)
+    oc = stripcontext(o)
+    oshowc, unit = _split_unit(oc)
+    (set(o, stripcontext, oshowc), unit)
+end
 function _split_unit(o::ComposedFunction)
     oshow, unit = _split_unit(o.outer)
     (_stripidentity(oshow ∘ o.inner), unit)
@@ -165,6 +172,6 @@ _from_wspec(spec::NamedTuple) = spec
 _from_wspec(widget) = (; widget)
 
 
-_optic_short_str(o) = replace(sprint(print, o; context=:compact => true), r"\(@optic ([^)]+)\)" => s"\1")
+_optic_short_str(o) = replace(sprint(print, stripcontext(o); context=:compact => true), r"\(@optic ([^)]+)\)" => s"\1")
 
 end
