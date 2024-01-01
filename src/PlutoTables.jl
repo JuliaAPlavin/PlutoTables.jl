@@ -52,6 +52,10 @@ function ItemsColumnsInput(obj, itemsoptic, optics)
         deleteat!(only(itemshead), 2)
         deleteat!(optshead, 2)
     end
+    if all(or -> or.optic == identity, os_full)
+        deleteat!(only(itemshead), 1)
+        deleteat!(optshead, 1)
+    end
     @p PlutoUI.combine() do Child
         tbldata = map(items .|> stripcontext) do item
             flatmap(os_full) do or
