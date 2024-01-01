@@ -31,10 +31,14 @@ end
             angle => Slider(-180:15.:180, show_value=true)
         ))
         @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
+
         w = IT(3e7 - 5e7im, (
             abs => Slider(0:0.2e7:1e8, show_value=true),
             @optic(angle(_) |> ustrip(u"°", _)) => Slider(-180:15.:180, show_value=true)
         ))
+        @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
+
+        w = IT(3e7 - 5e7im, ())
         @test Bonds.initial_value(w) ≈ 3e7 - 5e7im
     end
 end
@@ -62,6 +66,20 @@ end
                 3.0-4im,
                 5.5+6.5im,    
             )
+
+            w = IT((
+                    1.0+2im,
+                    3.0-4im,
+                    5.5+6.5im,    
+                ), itemsoptic, ())
+            @test Bonds.initial_value(w) ≈ₜ (
+                1.0+2im,
+                3.0-4im,
+                5.5+6.5im,    
+            )
+
+            # w = IT((), itemsoptic, ())
+            # @test Bonds.initial_value(w) ≈ₜ ()
         end
         @testset for itemsoptic in (Elements(), keyed(Elements()), @optics(_[1], _[3]))
             w = IT([
