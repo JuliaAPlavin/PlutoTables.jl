@@ -15,3 +15,5 @@ creates this interface for `obj`:
 ![](examples/simpleui.png)
 
 See the [Pluto notebook](https://aplavin.github.io/PlutoTables.jl/examples/notebook.html) for more examples and details.
+
+Note: tabular widgets can be especially convenient when put into a sidebar, see [PlutoUIExtra](https://gitlab.com/aplavin/PlutoUIExtra.jl) for a notebook sidebar widget.
