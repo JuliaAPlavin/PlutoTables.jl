@@ -12,13 +12,11 @@ export ColumnInput, RowInput, ItemsColumnsInput, ItemsRowsInput
 
 function ColumnInput(ctype::Type, optics)
     os_full = _fullspec(optics)
-    itemshead = [["Optic"; "Unit"; "Value"]]
     optshead = [
         map(or -> or.label, os_full),
         map(or -> _unit_to_html(or.unit), os_full),
     ]
     if all(or -> isnothing(or.unit), os_full)
-        deleteat!(only(itemshead), 2)
         deleteat!(optshead, 2)
     end
     @p PlutoUI.combine() do Child
@@ -27,7 +25,7 @@ function ColumnInput(ctype::Type, optics)
                 Child(or.widget)
             end
         ] |> stack
-        _table_html(itemshead, optshead, eachrow(tbldata))
+        _table_html([], optshead, eachrow(tbldata))
     end |>
     PlutoUI.Experimental.transformed_value() do tup
         construct(ctype, (first.(optics) .=> tup)...)
@@ -41,19 +39,19 @@ ItemsColumnsInput(obj, optics) = ItemsColumnsInput(obj, keyed(∗), optics)
 function ItemsColumnsInput(obj, itemsoptic, optics)
     items = getall(obj, itemsoptic)
     os_full = _fullspec(optics, stripcontext(first(items)))
-    itemshead = [["Optic"; "Unit"; map(items) do kit
-        kit isa AccessorsExtra.ValWithContext ? first(kit) : "Value"
-    end |> collect]]
+    itemshead = hascontext(itemsoptic) ? [[""; ""; map(items) do kit
+        first(kit)
+    end |> collect]] : []
     optshead = [
         flatmap(or -> Any[RowSpan(or.label, or.nrow); fill(nothing, or.nrow-1)], os_full),
         flatmap(or -> Any[RowSpan(_unit_to_html(or.unit), or.nrow); fill(nothing, or.nrow-1)], os_full),
     ]
     if all(or -> isnothing(or.unit), os_full)
-        deleteat!(only(itemshead), 2)
+        isempty(itemshead) || deleteat!(only(itemshead), 2)
         deleteat!(optshead, 2)
     end
     if all(or -> or.optic == identity, os_full)
-        deleteat!(only(itemshead), 1)
+        isempty(itemshead) || deleteat!(only(itemshead), 1)
         deleteat!(optshead, 1)
     end
     @p PlutoUI.combine() do Child
