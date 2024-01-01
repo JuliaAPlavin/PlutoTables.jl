@@ -18,7 +18,7 @@ Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 UnitfulExt = "Unitful"
 
 [compat]
-AccessorsExtra = "0.1.45"
+AccessorsExtra = "0.1.44"
 CompositionsBase = "0.1.2"
 DataPipes = "0.3.8"
 FlexiMaps = "0.1.14"
