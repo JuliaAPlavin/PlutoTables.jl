@@ -146,7 +146,7 @@ _to_td(x::ColSpan) = @htl("<td colspan=$(x.colspan)>$(x.value)</td>")
 
 
 _fullspec(optics, obj) = map(optics) do (optic, spec)
-    oshow, unit = _split_unit(optic)
+    oshow, unit = _split_unit(optic, obj)
     (; optic, unit, label=sprint(print, stripcontext(oshow); context=:compact => true), nrow=length(getall(obj, optic)), _from_wspec(spec)...)
 end
 _fullspec(optics) = map(optics) do (optic, spec)
@@ -155,15 +155,19 @@ _fullspec(optics) = map(optics) do (optic, spec)
 end
 
 
-_split_unit(::typeof(rad2deg)) = (identity, "°")
-_split_unit(o) = (o, nothing)
-function _split_unit(o::AccessorsExtra.ContextOptic)
+_split_unit(::typeof(rad2deg), _...) = (identity, "°")
+_split_unit(o, _...) = (o, nothing)
+function _split_unit(o::AccessorsExtra.ContextOptic, obj...)
     oc = stripcontext(o)
-    oshowc, unit = _split_unit(oc)
+    oshowc, unit = _split_unit(oc, obj...)
     (set(o, stripcontext, oshowc), unit)
 end
 function _split_unit(o::ComposedFunction)
     oshow, unit = _split_unit(o.outer)
+    (_stripidentity(oshow ∘ o.inner), unit)
+end
+function _split_unit(o::ComposedFunction, obj)
+    oshow, unit = _split_unit(o.outer, first(getall(obj, o.inner)))
     (_stripidentity(oshow ∘ o.inner), unit)
 end
 
