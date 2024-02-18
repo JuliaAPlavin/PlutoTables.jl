@@ -14,13 +14,8 @@ macro bind(def, element)
     end
 end
 
-# ╔═╡ e82cad05-8438-41c6-9017-225dcd13b90e
-begin
-	using Revise
-	import Pkg
-	eval(:(Pkg.develop(path="..")))
-	using PlutoTables
-end
+# ╔═╡ 64229c85-c53d-4b77-bf06-c7cf7908d83c
+using PlutoTables
 
 # ╔═╡ f9b4544e-a767-4b84-9fdb-87cf0d4b1ed9
 using PlutoUIExtra
@@ -49,8 +44,13 @@ md"""
 Import `PlutoTables` and other useful packages:
 """
 
-# ╔═╡ 64229c85-c53d-4b77-bf06-c7cf7908d83c
-# using PlutoTables
+# ╔═╡ e82cad05-8438-41c6-9017-225dcd13b90e
+# begin
+# 	using Revise
+# 	import Pkg
+# 	eval(:(Pkg.develop(path="..")))
+# 	using PlutoTables
+# end
 
 # ╔═╡ 90bb0c1a-0c92-4d7b-90bf-d0fdce2d359f
 
@@ -251,10 +251,8 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 AccessorsExtra = "33016aad-b69d-45be-9359-82a41f556fd4"
 IntervalSets = "8197267c-284f-5f27-9208-e0e47529a953"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 PlutoTables = "e64c0356-fa58-4209-b01c-f6c8ed5474f5"
 PlutoUIExtra = "a011ac08-54e6-4ec3-ad1c-4165f16ac4ce"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
@@ -263,7 +261,6 @@ AccessorsExtra = "~0.1.68"
 IntervalSets = "~0.7.9"
 PlutoTables = "~0.1.5"
 PlutoUIExtra = "~0.1.6"
-Revise = "~3.5.13"
 StaticArrays = "~1.9.2"
 Unitful = "~1.19.0"
 """
@@ -274,7 +271,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.0"
 manifest_format = "2.0"
-project_hash = "12eb829f817558b0803dd20fd9bd4a25c87a3502"
+project_hash = "a1c6133ca50c5d9d3029e0f9597b4344bc71f35a"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -346,12 +343,6 @@ uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
-[[deps.CodeTracking]]
-deps = ["InteractiveUtils", "UUIDs"]
-git-tree-sha1 = "c0216e792f518b39b22212127d4a84dc31e4e386"
-uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
-version = "1.3.5"
-
 [[deps.ColorTypes]]
 deps = ["FixedPointNumbers", "Random"]
 git-tree-sha1 = "eb7f0f8307f71fac7c606984ea5fb2817275d6e4"
@@ -391,10 +382,6 @@ version = "0.3.14"
 [[deps.Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
-
-[[deps.Distributed]]
-deps = ["Random", "Serialization", "Sockets"]
-uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
@@ -470,12 +457,6 @@ git-tree-sha1 = "31e996f0a15c7b280ba9f76636b3ff9e2ae58c9a"
 uuid = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 version = "0.21.4"
 
-[[deps.JuliaInterpreter]]
-deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
-git-tree-sha1 = "04663b9e1eb0d0eabf76a6d0752e0dac83d53b36"
-uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
-version = "0.9.28"
-
 [[deps.LibCURL]]
 deps = ["LibCURL_jll", "MozillaCACerts_jll"]
 uuid = "b27032c2-a3e7-50c8-80cd-2d36dbcbfd21"
@@ -509,12 +490,6 @@ uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
-
-[[deps.LoweredCodeUtils]]
-deps = ["JuliaInterpreter"]
-git-tree-sha1 = "20ce1091ba18bcdae71ad9b71ee2367796ba6c48"
-uuid = "6f1432cf-f94c-5a45-995e-cdbf5db27b0b"
-version = "2.4.4"
 
 [[deps.MIMEs]]
 git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
@@ -551,11 +526,6 @@ version = "1.2.0"
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
 version = "0.3.23+2"
-
-[[deps.OrderedCollections]]
-git-tree-sha1 = "dfdf5519f235516220579f949664f1bf44e741c5"
-uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
-version = "1.6.3"
 
 [[deps.Parsers]]
 deps = ["Dates", "PrecompileTools", "UUIDs"]
@@ -618,18 +588,6 @@ uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
 uuid = "189a3867-3050-52da-a836-e630ba90ab69"
 version = "1.2.2"
-
-[[deps.Requires]]
-deps = ["UUIDs"]
-git-tree-sha1 = "838a3a4188e2ded87a4f9f184b4b0d78a1e91cb7"
-uuid = "ae029012-a4dd-5104-9daa-d747884805df"
-version = "1.3.0"
-
-[[deps.Revise]]
-deps = ["CodeTracking", "Distributed", "FileWatching", "JuliaInterpreter", "LibGit2", "LoweredCodeUtils", "OrderedCollections", "Pkg", "REPL", "Requires", "UUIDs", "Unicode"]
-git-tree-sha1 = "3fe4e5b9cdbb9bbc851c57b149e516acc07f8f72"
-uuid = "295af30f-e4ad-537b-8983-00126c2a3abe"
-version = "3.5.13"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
